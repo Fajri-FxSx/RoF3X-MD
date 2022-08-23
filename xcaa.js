@@ -28,6 +28,7 @@ const qrcode = require('qrcode')
 
 //Lib
 const { cerpen } = require('./lib/cerpen')
+const { createExif, modStick } = require('./lib/exif.js')
 const { bytesToSize, TelegraPh, UploadFileUgu, webp2mp4File, floNime } = require('./lib/uploader')
 const { pinterest, wallpaper, wikimedia, quotesAnime, styletext, listsurah, niatsholat, jadwalsholat, lirikLagu } = require('./lib/scraper')
 const { smsg, getGroupAdmins, formatp, tanggal, formatDate, getTime, isUrl, await, sleep, clockString, msToDate, sort, toNumber, enumGetKey, runtime, fetchJson, getBuffer, jsonformat, delay, format, logic, generateProfilePicture, parseMention, getRandom, pickRandom } = require('./lib/myfunc')
@@ -372,6 +373,7 @@ ${readmore}
 ╭「 *CONVERT* 」
 ├ ${prefix}sticker <image/video>
 ├ ${prefix}stickerwm  <teks>
+├ ${prefix}take <teks|teks>
 ├ ${prefix}smeme <teks|teks>
 ├ ${prefix}emojimix <emoji>
 ├ ${prefix}emojimix2 <emoji>
@@ -1555,6 +1557,20 @@ case 'stickerwm': case 'swm': case 'stickergifwm': case 'sgifwm': case 'stikerwm
   } else {
     throw `Kirim Gambar/Video Dengan Caption ${prefix + command}\nDurasi Video 1-9 Detik`
   }
+  } catch (err) {
+  reply2(from)
+  }
+  }
+  break
+case 'take': case 'colong': case 'takes': {
+  if (!text) return m.reply(`Kirim Sticker/Reply Dengan Caption ${prefix + command} Teks|Teks`)
+  try {
+  media = await xcaa.downloadAndSaveMediaMessage(quoted)
+  anu = args.join(' ').split('|')
+  satu = anu[0] !== '' ? anu[0] : `${rdmpck}`
+  dua = typeof anu[1] !== '' ? anu[1] : `${rdmaut}`
+  require('./lib/exif.js').createExif(satu, dua)
+  require('./lib/exif.js').modStick(media, xcaa, m, from)
   } catch (err) {
   reply2(from)
   }
